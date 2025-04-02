@@ -11,7 +11,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useProfile } from '../context/ProfileContext';
 import axios from 'axios'
 import { ToastContainer, toast } from "react-toastify";
-
+import { FaPlay,FaBullhorn } from 'react-icons/fa';
 const socket = io(process.env.REACT_APP_BASE_URL);
 
 const T20Content = () => {
@@ -56,6 +56,20 @@ const T20Content = () => {
   const [successPopup, setSuccessPopup] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
 
+
+
+      const [news, setNews] = useState([{content:"Get Ready for Action - Welcome to 98FastBet!"}]);
+    
+      useEffect(() => {
+        axios.get(`${process.env.REACT_APP_BASE_URL}/api/platform/news`)
+          .then((response) => {
+            if(response.data.length > 0){
+              setNews(response.data)
+            }
+          })
+          .catch((error) => console.error("Error fetching news:", error));
+      }, []);
+
   const [showBetPopup, setShowBetPopup] = useState(false);
 
   const openBetPopup = () => {
@@ -72,7 +86,9 @@ const T20Content = () => {
       if (!userId) throw new Error('User ID not found');
       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/getwalletandexposure/${userId}`);
       setInitialbalce(response.data.balance)
-      // console.log(response.data)
+     
+    
+      console.log(response.data)
     } catch (err) {
      toast.error('Failed to fetch wallet data.');
     
@@ -92,9 +108,10 @@ const T20Content = () => {
       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/getwalletandexposure/${userId}`);
       setBalance(response.data.balance);
       setMarketOddsExposure(response.data.exposureBalance)
-     
+      // setTeam1Winnings(response.data.teamAProfit)
+      // setTeam2Winnings(response.data.teamBProfit)
     
-      // console.log(response.data)
+      console.log(response.data)
     } catch (err) {
      toast.error('Failed to fetch wallet data.');
     
@@ -108,7 +125,9 @@ const T20Content = () => {
 
 
 
-const userId1 = JSON.parse(localStorage.getItem('user'))?.id;
+
+  
+  const userId1 = JSON.parse(localStorage.getItem('user'))?.id;
   const fetchApiMatchOdds = async () => {
     try {
       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/laggai_khai_getuserbet/${userId1}`);
@@ -131,7 +150,7 @@ const userId1 = JSON.parse(localStorage.getItem('user'))?.id;
 
     fetchApiMatchOdds()
   }, []);
-  
+
 
   const [previousBet, setPreviousBet] = useState({
     runs: null,
@@ -142,7 +161,6 @@ const userId1 = JSON.parse(localStorage.getItem('user'))?.id;
 
   const location = useLocation();
   const { id, iframeUrl, match } = location.state || {};
-  localStorage.setItem("match", match)
 
   const {
     overTeam1Winnings,
@@ -305,7 +323,7 @@ const userId1 = JSON.parse(localStorage.getItem('user'))?.id;
   const handleSubmit = useCallback(async () => {
     try {
       setSubmitClick((prev) => (prev + 1))
-      // console.log("ok1")
+      console.log("ok1")
       if (!selectedBet.label || !stakeValue) {
         throw new Error("Please fill out all fields correctly!");
       }
@@ -735,7 +753,11 @@ const userId1 = JSON.parse(localStorage.getItem('user'))?.id;
         />
         <div className="left_side">
           <div className="T20_header">
-            <h1>NEWS</h1>
+               <ScrollingTextContainer>
+                          <ScrollingText>
+                            <h3><FaBullhorn size={22} />{news[0].content}</h3>
+                          </ScrollingText>
+                  </ScrollingTextContainer>
           </div>
 
           <TournamentWinner
@@ -835,6 +857,66 @@ const userId1 = JSON.parse(localStorage.getItem('user'))?.id;
     </>
   );
 };
+
+
+const ScrollingTextContainer = styled.div`
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  white-space: nowrap;
+  flex: 1;
+  margin-right: 0px;
+  margin-top:25px;
+  @media (max-width: 768px) {
+    max-width: 100%;
+  }
+`;
+
+const ScrollingText = styled.div`
+  display: inline-block;
+  animation: scrollText 13s linear infinite;
+  color: #ff8600;
+  font-weight: 500;
+  
+  @keyframes scrollText {
+    0% { transform: translateX(250%); }
+    100% { transform: translateX(-100%); }
+  }
+  
+  h3 {
+    margin: 0;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    
+    svg {
+      margin-right: 8px;
+      animation: pulse 1.5s infinite;
+      font-size: 22px;
+    }
+    
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+    
+    @media (max-width: 768px) {
+      font-size: 14px;
+      
+      svg {
+        margin-right: 6px;
+        font-size: 20px;
+      }
+
+       @keyframes scrollText {
+        0% { transform: translateX(100%); }
+        100% { transform: translateX(-100%); }
+      }
+    }
+  }
+`;
+
 
 const LiveScoreContainer = styled.div`
   background: linear-gradient(135deg, #1e1e2f, #2a2a40);
@@ -941,7 +1023,7 @@ const PopupContent = styled.div`
 
 const PopupTitle = styled.h3`
   color: #ff4d4d;
-  font-size: 1rem;
+  font-size: 1.4rem;
   margin-bottom: 1rem;
   font-weight: 600;
 `;
