@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import Card from "./Card";
@@ -79,20 +78,19 @@ const Papu = () => {
 
 
   useEffect(() => {
-    if (countDown > 0) return; // Wait until countdown reaches 0
+    if (countDown > 0) return;
 
     const revealNextImage = async (index) => {
       setIsProcessing(true)
       setIsUpdateResult(true)
       setResult(true)
       setCards((prevCards) => {
-        if (prevCards[index]?.revealedImage) return prevCards; // Skip if already revealed
+        if (prevCards[index]?.revealedImage) return prevCards;
 
         return prevCards.map((card, i) =>
           i === index ? { ...card, loading: true } : card
         );
       });
-
 
       try {
         const response = await axios.get(
@@ -100,8 +98,8 @@ const Papu = () => {
         );
         const newRandomImage = response.data.randomImage;
         localStorage.setItem("randomImage", newRandomImage);
-        console.log(newRandomImage, "newRandomImage")
         setRandomImage(newRandomImage);
+
         setCards((prevCards) =>
           prevCards.map((card, i) =>
             i === index
@@ -109,28 +107,94 @@ const Papu = () => {
               : card
           )
         );
-        // setResult(true)
+
+        // Check result after image is revealed
+        const isMatch = selectedCard.some((card) => card.image === newRandomImage);
+        const allBet = selectedCard.reduce((total, card) => total + card.betAmount, 0);
+
+        if (isMatch) {
+          setBalance((prev) => prev + expectedProfit);
+          setHighlightedImages((prev) => [...new Set([...prev, newRandomImage])]);
+          setWinningPointOfUser((prev) => [...prev, 10]);
+          setTotalBetAmt(allBet);
+
+          try {
+            const response = await axios.put(
+              `${process.env.REACT_APP_BASE_URL}/api/titli/updatebets`,
+              {
+                gameId: localStorage.getItem('titligameId'),
+                user: profile.userId,
+                betAmount,
+                profit: expectedProfit,
+                totalBets: allBet,
+                isWin: true
+              }
+            );
+            if (response.data.newBalance) {
+              setBalance(response.data.newBalance);
+            }
+            if (response.status === 200) {
+              fetchNameWallet()
+            }
+          } catch (error) {
+            console.error("Error updating bet (win):", error);
+          }
+        } else {
+          try {
+            const response = await axios.put(
+              `${process.env.REACT_APP_BASE_URL}/api/titli/updatebets`,
+              {
+                gameId: localStorage.getItem('titligameId'),
+                user: profile.userId,
+                profit: 0,
+                totalBets: allBet,
+                isWin: false
+              }
+            );
+            if (response.data.newBalance) {
+              setBalance(response.data.newBalance);
+            }
+            if (response.status === 200) {
+              fetchNameWallet()
+            }
+          } catch (error) {
+            console.error("Error updating bet (loss):", error);
+          }
+        }
+
+        await showPremiumPopup({
+          html: `
+            <div style="position: absolute; top: 120px; left: 50%; transform: translate(-50%, 0); background: black; opacity: 0.8; padding: 1rem 1rem; border-radius:0.2rem; text-align: center;">
+              <div style="font-size: 1.25rem; font-weight: bold;">${isMatch ? "You Won!" : "Try Again!"}</div>
+              <div style="font-size: 0.875rem;">${isMatch ? `₹${expectedProfit} Added!` : "Better luck next time!"}</div>
+            </div>
+          `,
+          gradient: isMatch
+            ? "bg-gradient-to-br from-green-600 via-emerald-500 to-cyan-500"
+            : "bg-gradient-to-br from-red-600 via-rose-500 to-pink-500",
+          timer: 3000,
+          position: "top-start",
+        });
+
         setTimeout(() => {
-          setCountDown(20); // Reset countdown for the new round
+          setCountDown(20);
           setIsProcessing(false);
-          
           setResult(false);
-          setBetPlaced(false); // Allow user to place a new bet
+          setBetPlaced(false);
           setSelectedImages([]);
           setSelectedCard([]);
         }, 4000);
-        // Reset countdown for the next round
+
       } catch (error) {
         console.error("Error fetching random image:", error);
       }
     };
-    console.log(cards, cards)
 
     let currentIndex = cards.findIndex((card) => !card.revealedImage);
     if (currentIndex !== -1) {
       revealNextImage(currentIndex);
     }
-  }, [countDown]); // Triggers when countdown reaches 0
+  }, [countDown]);
 
   // useEffect(() => {
   //   if (countDown > 0) {
@@ -257,13 +321,11 @@ console.log(isUpdateResult, "updateResult")
     const newgameId = `T${date.getTime().toString().padStart(3, '0')}`;
     localStorage.setItem('titligameId', newgameId)
     setGameId(newgameId)
-    // console.log(gameId)
+
     if (isProcessing) return;
     setIsProcessing(true);
 
     const totalBet = selectedCard.reduce((total, card) => total + card.betAmount, 0);
-
-    // console.log("Total Bet:", totalBet);
 
     if (!betAmount) {
       toast.error("⚠️ Select Bet Amount!");
@@ -304,7 +366,6 @@ console.log(isUpdateResult, "updateResult")
       if (selectedImages.length > 0) {
         setBalance((prev) => prev - totalBet);
         const allBet = selectedCard.reduce((total, card) => total + card.betAmount, 0);
-        // fetchRandomImage()
         try {
           const response = await axios.post(
             `${process.env.REACT_APP_BASE_URL}/api/titli/new/bets`,
@@ -314,31 +375,25 @@ console.log(isUpdateResult, "updateResult")
               selectedCard: selectedCard,
               totalBets: allBet,
               gameId: localStorage.getItem('titligameId'),
-              // isWin: isMatch
             }
           );
 
           if (response.data.newBalance) {
             setBalance(response.data.newBalance);
-
           }
           if (response.status === 200) {
             fetchNameWallet()
           }
-          // setBetCooldown(10);
         } catch (error) {
-          console.error("Error creating bet (win):", error);
+          console.error("Error creating bet:", error);
         }
-
       }
       setBetPlaced(true);
     }
 
-    // console.log(cards)
     const nextCard = cards.find((card) => !card.scratched);
     if (!nextCard) {
       await showPremiumPopup({
-        // title: '<div style="font-size: 2.5rem;">🏁</div>',
         html: `
             <div style="position: absolute; top: 120px; left: 50%; transform: translate(-50%, 0); background: black; opacity: 0.8; padding: 1rem 1rem; border-radius:0.2rem; text-align: center;">
             <div style="font-size: 1.25rem; font-weight: bold;">Game Over!</div>
@@ -352,125 +407,7 @@ console.log(isUpdateResult, "updateResult")
       setIsProcessing(false);
       return;
     }
-    console.log(countDown, "countDown")
-    // fetchRandomImalge()
-    // console.log(localStorage.getItem("randomImage"))
-    // console.log(result, "result")
-    // if (result) {
-    if (!isProcessing) {
-      // if (isUpdateResult) {
-      console.log("ok1")
-      setTimeout(async () => {
-        const isMatch = selectedCard.some((card) => card.image === localStorage.getItem("randomImage"));
-        let winnings = 0;
-      
-        // fetchRandomImage()
-        if (isMatch ) {
-          setBalance((prev) => prev + winnings);
-          setHighlightedImages((prev) => [...new Set([...prev, randomImage])]);
-          setWinningPointOfUser((prev) => [...prev, 10]);
-          const allBet = selectedCard.reduce((total, card) => total + card.betAmount, 0);
-          setTotalBetAmt(allBet)
-          // Record win via API (profit positive)
-          try {
-            const response = await axios.put(
-              `${process.env.REACT_APP_BASE_URL}/api/titli/updatebets`,
-              {
-                gameId: localStorage.getItem('titligameId'),
-                user: profile.userId,
-                betAmount,
-                profit: isMatch ? expectedProfit : 0,
-                // totalBets: totalBet,
-                totalBets: allBet,
-                isWin: isMatch
-              }
-            );
-            if (response.data.newBalance) {
-              setBalance(response.data.newBalance);
-
-            }
-            if (response.status === 200) {
-              fetchNameWallet()
-              // localStorage.removeItem("randomImage");
-            }
-            // setBetCooldown(10);
-          } catch (error) {
-            console.error("Error creating bet (win):", error);
-          }
-        } else {
-          // Record loss via API (profit 0, balance remains decreased)
-          try {
-            const response = await axios.put(
-              `${process.env.REACT_APP_BASE_URL}/api/titli/updatebets`,
-              {
-                gameId: localStorage.getItem('titligameId'),
-                user: profile.userId,
-                profit: isMatch ? expectedProfit : 0,
-                // totalBets: totalBet,
-                totalBets: totalBet,
-                isWin: isMatch
-              }
-            );
-            setExposure((prev) => prev + totalBet);
-            // profile.exposureBalance = profile.exposureBalance + totalBet
-            if (response.data.newBalance) {
-              setBalance(response.data.newBalance);
-            }
-            if (response.status === 200) {
-              fetchNameWallet()
-            }
-            // setBetCooldown(10);
-          } catch (error) {
-            console.error("Error creating bet (loss):", error);
-          }
-        }
-      
-
-
-        await showPremiumPopup({
-          html: `
-    <div style="position: absolute; top: 120px; left: 50%; transform: translate(-50%, 0); background: black; opacity: 0.8; padding: 1rem 1rem; border-radius:0.2rem; text-align: center;">
-      <div style="font-size: 1.25rem; font-weight: bold;">${isMatch ? "You Won!" : "Try Again!"}</div>
-      <div style="font-size: 0.875rem;">${isMatch ? `₹${expectedProfit} Added!` : "Better luck next time!"}
-    </div>
-  `,
-          gradient: isMatch
-            ? "bg-gradient-to-br from-green-600 via-emerald-500 to-cyan-500"
-            : "bg-gradient-to-br from-red-600 via-rose-500 to-pink-500",
-          timer: 3000,
-          position: "top-start",
-        });
-
-        setCards((prev) =>
-          prev.map((c) =>
-            c.id === nextCard.id ? { ...c, scratched: true, revealedImage: localStorage.getItem("randomImage") } : c
-          )
-        );
-        // Reset state for next round
-        // setSelectedImages([]);
-        setBetPlaced(false);
-        setIsProcessing(false);
-        fetchBets()
-        setBetCooldown(10);
-        setResult(false)
-      }, [countDown]);
-      // }
-    }
-
-    // }
-
-
-
-  }, [
-    isProcessing,
-    selectedImages,
-    betPlaced,
-    balance,
-    betAmount,
-    cards,
-    initializeGame,
-    profile.id
-  ]);
+}, [isProcessing, selectedImages, betPlaced, balance, betAmount, cards, initializeGame, profile.id]);
 
   const toggleImageSelection = (image, betAmount, profit) => {
     // console.log(image, betAmount, profit)
