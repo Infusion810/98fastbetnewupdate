@@ -65,7 +65,7 @@ const VirtualAccountDetails = ({ onClose }) => {
       - Deposit: ₹${depositAmount}
       - UTR No: ${Utr}`;
 
-      const whatsappUrl = `https://wa.me/91${8234067839}?text=${encodeURIComponent(message)}`;
+      const whatsappUrl = `https://wa.me/91${2269334732}?text=${encodeURIComponent(message)}`;
       window.open(whatsappUrl, "_blank");
 
     } catch (error) {
