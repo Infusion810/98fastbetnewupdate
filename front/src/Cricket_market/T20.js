@@ -92,8 +92,8 @@ const T20Content = () => {
       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/getwalletandexposure/${userId}`);
       setBalance(response.data.balance);
       setMarketOddsExposure(response.data.exposureBalance)
-      setTeam1Winnings(response.data.teamAProfit)
-      setTeam2Winnings(response.data.teamBProfit)
+      // setTeam1Winnings(response.data.teamAProfit)
+      // setTeam2Winnings(response.data.teamBProfit)
     
       // console.log(response.data)
     } catch (err) {
@@ -106,6 +106,34 @@ const T20Content = () => {
     fetchWalletData();
     
   }, []);
+
+
+ 
+  const userId1 = JSON.parse(localStorage.getItem('user'))?.id;
+  const fetchApiMatchOdds = async () => {
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/laggai_khai_getuserbet/${userId1}`);
+      const allData = response.data.bets;
+
+
+      // Filter data to only include entries where 'match' equals 'matchConstant'
+      const filtered = allData.filter((item) => item.match === match);
+      console.log(response.data, "data")
+      setTeam1Winnings(filtered[0].teamAProfit); // Accessing the first object in the array
+      setTeam2Winnings(filtered[0].teamBProfit);
+      // fetchNameWallet();
+    } catch (err) {
+      console.error('Error fetching bets:', err);
+      // toast.error("There was an error fetching bets.");
+    }
+  }
+
+  useEffect(() => {
+
+    fetchApiMatchOdds()
+  }, []);
+
+  
 
 
   const [previousBet, setPreviousBet] = useState({
