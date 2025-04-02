@@ -41,8 +41,8 @@ const T20Content = () => {
   
   const [backProfit, setBackProfit] = useState(0);
   const [layProfit, setLayProfit] = useState(0);
-  const [team1Winnings, setTeam1Winnings] = useState(null);
-  const [team2Winnings, setTeam2Winnings] = useState(null);
+  const [team1Winnings, setTeam1Winnings] = useState(0);
+  const [team2Winnings, setTeam2Winnings] = useState(0);
   const [betPopup, setBetPopup] = useState(null);
   const [sessionBets, setSessionBets] = useState([]);
   const [currentStake, setCurrentStake] = useState('');
