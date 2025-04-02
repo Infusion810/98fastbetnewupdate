@@ -204,13 +204,7 @@ function Sidebar() {
                 selected={selected}
                 setSelected={setSelected}
               />
-                <Item
-                title="Cricket Market"
-                to="/cricket/market"
-                icon={<ContactsOutlinedIcon />}
-                selected={selected}
-                setSelected={setSelected}
-              />
+
               <Item
                 title="Cricket"
                 to="/cricket"
