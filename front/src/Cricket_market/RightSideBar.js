@@ -598,10 +598,10 @@ const BetSection = ({
         <PopupOverlay>
           <PopupContainer>
             <CloseButton onClick={() => setBetPopup(false)}>X</CloseButton>
-            <SectionHeader>
+            {/* <SectionHeader>
               <SectionTitle>Place Bet</SectionTitle>
               <span>(Bet for)</span>
-            </SectionHeader>
+            </SectionHeader> */}
 
             <BetForContainer>
               <BetLabel>Bet For</BetLabel>
@@ -659,9 +659,9 @@ const BetSection = ({
 
       {/* My Bets Table - Always shown */}
       <BetSectionContainer id="bet-section">
-        <SectionHeader>
+        {/* <SectionHeader>
           <SectionTitle>My Bet(MatchOdds)</SectionTitle>
-        </SectionHeader>
+        </SectionHeader> */}
 
         <MyBetTableContainer>
           <MyBetTable>
@@ -712,9 +712,9 @@ const BetSection = ({
         </MyBetTableContainer>
       </BetSectionContainer>
       <BetSectionContainer id="bet-section">
-        <SectionHeader>
+        {/* <SectionHeader>
           <SectionTitle>My Bet(Session) </SectionTitle>
-        </SectionHeader>
+        </SectionHeader> */}
 
         <MyBetTableContainer>
           <MyBetTable>
