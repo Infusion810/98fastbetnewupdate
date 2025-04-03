@@ -163,8 +163,9 @@ const TableCell = styled.td`
   vertical-align: middle;
   margin: auto;
 
-  @media (max-width: 768px) {
-    padding: 8px;
+  @media (max-width: 768px) {    
+       padding: 3px;
+       border: 1px solid #9d989873;
   }
 `;
 
