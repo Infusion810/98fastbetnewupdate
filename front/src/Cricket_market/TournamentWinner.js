@@ -350,6 +350,7 @@ const TournamentWinner = ({
       isOverMarket: isOverMarket
     };
 
+    
     // Calculate profit and exposure based on current stake if available
     if (stake) {
       const { profit, exposure } = calculateProfit(type, odds, stake, runs);
