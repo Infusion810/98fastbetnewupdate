@@ -228,7 +228,7 @@
 //                 </DialogActions>
 //             </Dialog>
 
-            
+
 //         </>
 //     );
 // }
@@ -257,12 +257,13 @@ function App() {
     const fetchMatches = async () => {
         try {
             const { data } = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/match/get-all-recent-matches`);
+            console.log(data)
             setMatches(data);
         } catch (error) {
             console.error("Error fetching matches:", error);
         }
     };
-
+    console.log(matches)
 
     const openModal = (match = null) => {
         if (match) {
@@ -342,13 +343,14 @@ function App() {
 
         try {
             if (editMatchId) {
-               const response = await axios.put(`${process.env.REACT_APP_BACKEND_URL}/api/match/update/${editMatchId}`, {
+                const response = await axios.put(`${process.env.REACT_APP_BACKEND_URL}/api/match/update/${editMatchId}`, {
                     matchName,
                     players: players.map((player, index) => ({ ...player, playerIndex: index }))
                 });
                 if (response.status == 200) {
                     toast.success("Match updated successfully!");
                     handleCloseUpdate();
+                    fetchMatches();
                 }
             } else {
                 const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/match/create`, {
@@ -357,6 +359,7 @@ function App() {
                 });
                 if (response.status === 200) {
                     toast.success("Match saved successfully!");
+                    fetchMatches();
                 }
 
 
@@ -410,8 +413,6 @@ function App() {
 
     const handleOpenUpdate = (match) => {
         // setCurrentPlayer({ ...leaderboard[index], index });
-
-
         if (match) {
             setMatchName(match.matchName);
             setPlayers(match.players);
@@ -455,21 +456,22 @@ function App() {
     //     }
     // };
 
-const handleViewPlayers =  (players) => {
+    const handleViewPlayers = (players) => {
 
-}
+    }
 
 
-const handleDelete = async (id) => {
-  
-      try {
-        await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/api/match/delete/${id}`);
-        fetchMatches();
-      } catch (error) {
-        console.error("Error deleting match:", error);
-      }
-    // }
-  };
+    const handleDelete = async (id) => {
+
+        try {
+            await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/api/match/delete/${id}`);
+            fetchMatches();
+            // console.log("ok")
+        } catch (error) {
+            console.error("Error deleting match:", error);
+        }
+        // }
+    };
 
     return (
         <>
@@ -547,12 +549,12 @@ const handleDelete = async (id) => {
                                     <TableRow key={index}>
                                         <TableCell>{match.matchName}</TableCell>
                                         <TableCell>
-                                        {match.players.map((player, playerIndex) => (
-                                            <div>
-                                            {player.playername} {player.score}
+                                            {match.players.map((player, playerIndex) => (
+                                                <div>
+                                                    {player.playername} {player.score}
 
-                                            </div>
-                                        ))}
+                                                </div>
+                                            ))}
                                         </TableCell>
                                         {/* <TableCell>{match.playerName}</TableCell> */}
                                         {/* <TableCell onClick={() => handleViewPlayers(match)}>View Players</TableCell> */}
