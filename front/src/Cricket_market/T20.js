@@ -716,7 +716,11 @@ const T20Content = () => {
         />
         <div className="left_side">
           <div className="T20_header">
-            <h1>NEWS</h1>
+          <ScrollingTextContainer>
+              <ScrollingText>
+                <h3><FaBullhorn size={22} />{news[0].content}</h3>
+              </ScrollingText>
+           </ScrollingTextContainer>
           </div>
 
           <TournamentWinner
