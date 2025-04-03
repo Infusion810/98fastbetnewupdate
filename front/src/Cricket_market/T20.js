@@ -821,6 +821,66 @@ const T20Content = () => {
   );
 };
 
+
+
+const ScrollingTextContainer = styled.div`
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  white-space: nowrap;
+  flex: 1;
+  margin-right: 0px;
+  margin-top:25px;
+  @media (max-width: 768px) {
+    max-width: 100%;
+  }
+`;
+
+const ScrollingText = styled.div`
+  display: inline-block;
+  animation: scrollText 13s linear infinite;
+  color: #ff8600;
+  font-weight: 500;
+  
+  @keyframes scrollText {
+    0% { transform: translateX(250%); }
+    100% { transform: translateX(-100%); }
+  }
+  
+  h3 {
+    margin: 0;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    
+    svg {
+      margin-right: 8px;
+      animation: pulse 1.5s infinite;
+      font-size: 22px;
+    }
+    
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+    
+    @media (max-width: 768px) {
+      font-size: 14px;
+      
+      svg {
+        margin-right: 6px;
+        font-size: 20px;
+      }
+
+       @keyframes scrollText {
+        0% { transform: translateX(100%); }
+        100% { transform: translateX(-100%); }
+      }
+    }
+  }
+`;
+
 const LiveScoreContainer = styled.div`
   background: linear-gradient(135deg, #1e1e2f, #2a2a40);
   width: 100%;
