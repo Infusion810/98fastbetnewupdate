@@ -663,6 +663,21 @@ const T20Content = () => {
     }
   }, [successPopup]);
 
+
+const [news, setNews] = useState([{content:"Get Ready for Action - Welcome to 98FastBet!"}]);
+  
+    useEffect(() => {
+      axios.get(`${process.env.REACT_APP_BASE_URL}/api/platform/news`)
+        .then((response) => {
+          if(response.data.length > 0){
+            setNews(response.data)
+          }
+        })
+        .catch((error) => console.error("Error fetching news:", error));
+    }, []);
+
+  
+
   return (
     <>
       <Navbar />
