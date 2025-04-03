@@ -7,12 +7,11 @@ const TitliAdmin = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    fetchImages(); // Fetch immediately on mount
 
-    fetchImages();
-    const intervalId = setInterval(fetchImages, 10000);
+    const interval = setInterval(fetchImages, 3000); // Fetch every 5 seconds
 
-   
-    return () => clearInterval(intervalId);
+    return () => clearInterval(interval); // Cleanup interval on unmount
   }, []);
 
   // useEffect(() => {
