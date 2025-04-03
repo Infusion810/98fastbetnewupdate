@@ -43,7 +43,7 @@ const Papu = () => {
   const [totalBetAmt, setTotalBetAmt] = useState(0)
   const [gameId, setGameId] = useState("")
   const [randomImage, setRandomImage] = useState(null);
-  const [countDown, setCountDown] = useState(20)
+  const [countDown, setCountDown] = useState(30)
   const [result, setResult] = useState(false)
   const betPlaceAmt = [
     { bet: 10, profit: 100 },
@@ -177,7 +177,7 @@ const Papu = () => {
         });
 
         setTimeout(() => {
-          setCountDown(20);
+          setCountDown(30);
           setIsProcessing(false);
           setResult(false);
           setBetPlaced(false);
