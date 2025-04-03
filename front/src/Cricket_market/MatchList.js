@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { FaCalendarAlt, FaTv, FaRegClock } from 'react-icons/fa';
@@ -96,8 +96,9 @@ const TableBody = styled.tbody`
   }
   
   td {
-    padding: 8px;
+    padding: 0px;
     text-align: center;
+    border:1px solid grey;
     
     &:first-child {
       text-align: left;
@@ -347,7 +348,7 @@ const sampleMatches = [
 // Helper function to format ISO date string to readable format
 const formatDate = (isoString) => {
   if (!isoString) return 'TBD';
-  
+
   try {
     const date = new Date(isoString);
     return date.toLocaleDateString('en-US', {
@@ -364,7 +365,7 @@ const formatDate = (isoString) => {
 // Helper function to format ISO date string to time
 const formatTime = (isoString) => {
   if (!isoString) return 'TBD';
-  
+
   try {
     const date = new Date(isoString);
     return date.toLocaleTimeString('en-US', {
@@ -381,43 +382,43 @@ const formatTime = (isoString) => {
 // Helper function to extract match name from backend data
 const extractMatchName = (match) => {
   console.log("Extracting match name from:", match); // Debug log to see the match object structure
-  
+
   // For cricket matches, the event_name field typically contains the match name
   if (match.event_name) return match.event_name;
-  
+
   // Try different properties where match name might be stored
   if (match.match_name) return match.match_name;
   if (match.name) return match.name;
-  
+
   // Check for team names
   if (match.home_team && match.away_team) return `${match.home_team} vs ${match.away_team}`;
-  
+
   // Check for runnerNames which is common in cricket API responses
   if (match.runnerNames && Array.isArray(match.runnerNames) && match.runnerNames.length >= 2) {
     return `${match.runnerNames[0].RN} vs ${match.runnerNames[1].RN}`;
   }
-  
+
   // Check for teams array
   if (match.teams && Array.isArray(match.teams) && match.teams.length >= 2) {
     return `${match.teams[0]} vs ${match.teams[1]}`;
   }
-  
+
   // If we can't find a proper name, use the title or a default with more information
   if (match.title) return match.title;
   if (match.league_name) return `${match.league_name} Match ${match.matchId || match.id || ''}`;
-  
+
   // Last resort - create a more descriptive default
   return `Cricket Match ${match.matchId || match.id || match.event_id || ''}`;
 };
 
 // Helper function to extract odds from runners
 const extractOddsFromRunners = (match) => {
-  const defaultOdds = { 
-    '1': { back: '-', lay: '-' }, 
-    'X': { back: '-', lay: '-' }, 
-    '2': { back: '-', lay: '-' } 
+  const defaultOdds = {
+    '1': { back: '-', lay: '-' },
+    'X': { back: '-', lay: '-' },
+    '2': { back: '-', lay: '-' }
   };
-  
+
   // Check if match has runners (common in cricket API)
   if (match.runners && Array.isArray(match.runners) && match.runners.length >= 2) {
     try {
@@ -437,7 +438,7 @@ const extractOddsFromRunners = (match) => {
           }
         }
       }
-      
+
       // Second runner (away team)
       const runner2 = match.runners[1];
       if (runner2 && runner2.ex) {
@@ -458,7 +459,7 @@ const extractOddsFromRunners = (match) => {
       console.warn('Error extracting odds from runners:', e);
     }
   }
-  
+
   return defaultOdds;
 };
 
@@ -470,7 +471,7 @@ const MatchList = ({ title, matches = [] }) => {
 
   useEffect(() => {
     socket.on("updateMatches", (data) => {
-      console.log("Received data:", data); // Debugging step
+      // console.log("Received data:", data); // Debugging step
       if (Array.isArray(data)) {
         setLeagues(data);
       } else {
@@ -481,38 +482,38 @@ const MatchList = ({ title, matches = [] }) => {
     return () => socket.off("updateMatches");
   }, []);
 
-const handleClick = (gameid,iframeUrl,match) => {
-  navigate(`/matchlist/currmtc`, {
-    state: { id: gameid ,iframeUrl:iframeUrl ,match:match}
-  });
-  console.log(gameid)
-};   
+  const handleClick = (gameid, iframeUrl, match) => {
+    navigate(`/matchlist/currmtc`, {
+      state: { id: gameid, iframeUrl: iframeUrl, match: match }
+    });
+    // console.log(gameid)
+  };
 
 
   console.log("Received matches:", JSON.stringify(matches, null, 2)); // Enhanced debug log with full structure
-  
+
   // Use actual matches data if available, otherwise use sample data
   const displayMatches = matches && matches.length > 0 ? matches : sampleMatches;
-  
+
   // Ensure each match has an odds object with default values and a unique ID
   const safeMatches = displayMatches.map((match, index) => {
     console.log(`Processing match ${index}:`, match); // Debug log for each match
-    
+
     // Extract date and time from ISO string if available
     const eventDate = match.event_date || match.date;
     const formattedDate = formatDate(eventDate);
     const formattedTime = formatTime(eventDate);
-    
+
     // Extract match name with index for context
     const matchName = extractMatchName(match) || `Cricket Match ${index + 1}`;
-    
+
     // Extract odds from runners if available
     const extractedOdds = extractOddsFromRunners(match);
-    
+
     // Get team names for display in odds columns
     let team1Name = '';
     let team2Name = '';
-    
+
     if (match.runnerNames && Array.isArray(match.runnerNames) && match.runnerNames.length >= 2) {
       team1Name = match.runnerNames[0].RN;
       team2Name = match.runnerNames[1].RN;
@@ -521,7 +522,7 @@ const handleClick = (gameid,iframeUrl,match) => {
       team1Name = teams[0];
       team2Name = teams[1];
     }
-    
+
     // Create a safe match object with all required properties
     return {
       id: match.id || match.match_id || match.matchId || `match-${index}`,
@@ -536,18 +537,18 @@ const handleClick = (gameid,iframeUrl,match) => {
     };
   });
 
-  console.log("Safe matches:", safeMatches); // Debug log to see processed data
+  // console.log("Safe matches:", safeMatches); // Debug log to see processed data
 
   return (
     <MatchListContainer>
       <MatchListHeader>
         <SportTitle>
           {/* <img src={logo} alt="Logo" /> */}
-          <h2 style ={{color:" #1a1a1a"}}>98FASTBET</h2>
-          <h2  style ={{color:" #1a1a1a"}}>{title || 'CRICKET'}</h2>
+          <h2 style={{ color: " #1a1a1a" }}>98FASTBET</h2>
+          <h2 style={{ color: " #1a1a1a" }}>{title || 'CRICKET'}</h2>
         </SportTitle>
       </MatchListHeader>
-      
+
       {safeMatches.length === 0 ? (
         <NoMatchesMessage>
           <FaRegClock />
@@ -573,7 +574,7 @@ const handleClick = (gameid,iframeUrl,match) => {
           ))}  */}
           <TableBody>
             {leagues.map((match, index) => (
-              <tr key={match.eventId || index} onClick={() => handleClick(match.marketId,match.scoreIframe,match.matchName)}>
+              <tr key={match.eventId || index} onClick={() => handleClick(match.marketId, match.scoreIframe, match.matchName)}>
                 <td>
                   <MatchInfo>
                     <MatchTitle>
