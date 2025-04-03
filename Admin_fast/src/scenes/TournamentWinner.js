@@ -453,14 +453,15 @@ const TournamentWinner = ({
     }
   };
 
-  console.log(matchName)
+  console.log( localStorage.getItem("matchName"), ",atch")
   const matchOddsResultFunc = async (match_name) => {
     try {
-      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/admin/matchodds/resultdeclaration`, { result: matchOddsResult, matchName: match_name });
-      if (response.data.success) {
+      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/admin/new-declaration`, {
+        resultType: matchOddsResult, winner: match_name, match: localStorage.getItem("matchName")
+      })
+      if (response.status === 200) {
         // fetchMatchData(matchName)
-
-        toast("success post data")
+        toast.success(response.data.message)
       } else {
         toast.error(response.data.message || "Failed to update result.");
       }
@@ -562,7 +563,7 @@ const TournamentWinner = ({
                         <TeamInfo>
                           <span className="team-name" style={{ fontWeight: 'bold', color: '#333' }}>
                             {row.label}
-                            <span style={{ color: '#888', marginLeft: '5px' }}>-{row.totalStake}</span>
+                            <span style={{ color: '#888', marginLeft: '5px' }}>-{row.totalStake1}</span>
                           </span>
                           {/* <span>000</span> */}
                           {/* <span>{row.totalStake} 000</span> */}
@@ -636,6 +637,7 @@ const TournamentWinner = ({
                             <ActionSelect onChange={(e) => setMatchOddsResult(e.target.value)}>
                               <option value="">Select</option>
                               <option value="Winner">Winner</option>
+                              <option value="loss">loss</option>
                               <option value="Draw">Draw</option>
                             </ActionSelect>
                           ) : (
