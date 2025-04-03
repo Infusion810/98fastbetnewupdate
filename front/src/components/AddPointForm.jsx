@@ -1,14 +1,26 @@
-
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 import { useProfile } from "../context/ProfileContext";
 import Swal from 'sweetalert2';
 import axios from "axios";
-import { FaTimes } from "react-icons/fa";
+import { FaTimes, FaCopy } from "react-icons/fa";
+
+// Add global styles for SweetAlert
+const GlobalStyle = createGlobalStyle`
+  .swal2-container {
+    z-index: 9999 !important; /* Ensure SweetAlert is above other elements */
+  }
+
+  .swal2-popup {
+    width: 300px !important; /* Adjust the width to make the popup smaller */
+    font-size: 14px !important; /* Adjust font size for better fit */
+    border-radius: 20px !important; /* Rounded corners */
+  }
+`;
 
 const VirtualAccountDetails = ({ onClose }) => {
   
-  const [copied, setCopied] = useState(false);
+  const [copied, setCopied] = useState({ upiId: false, phone: false });
   const { profile } = useProfile();
   const [depositAmount, setDepositAmount] = useState("");
   const [phoneNo, setPhoneNo] = useState('');
@@ -30,10 +42,10 @@ const VirtualAccountDetails = ({ onClose }) => {
       });
   }, []);
 
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(upiId).then(() => {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+  const copyValueToClipboard = (key, value) => {
+    navigator.clipboard.writeText(value).then(() => {
+      setCopied((prev) => ({ ...prev, [key]: true }));
+      setTimeout(() => setCopied((prev) => ({ ...prev, [key]: false })), 2000);
     });
   };
 
@@ -78,52 +90,70 @@ const VirtualAccountDetails = ({ onClose }) => {
   };
 
   return (
-    <Card>
-      <CloseButton onClick={onClose}><FaTimes /></CloseButton>
-      <Title>Deposit Request</Title>
-      <CopyButton onClick={copyToClipboard}>{copied ? "Copied!" : "Copy UPI"}</CopyButton>
-      
-      <Label>UPI Handle:</Label>
-      <Value>{upiId}</Value>
+    <>
+      <GlobalStyle /> {/* Apply global styles */}
+      <Card>
+        <CloseButton onClick={onClose}><FaTimes /></CloseButton>
+        <Title>Deposit Request</Title>
+        
+        <Label>UPI Handle:</Label>
+        <Value>
+          {upiId}
+          {copied.upiId ? (
+            <span style={{ color: "#ff8e53", marginLeft: "8px" }}>Copied!</span>
+          ) : (
+            <CopyIcon onClick={() => copyValueToClipboard("upiId", upiId)}><FaCopy /></CopyIcon>
+          )}
+        </Value>
+        
 
-      <Label>PhonePay/Paytm:</Label>
-      <Value>{phone}</Value>
+        <Label>PhonePay/Paytm:</Label>
+        <Value>
+          {phone}
+          {copied.phone ? (
+            <span style={{ color: "#ff8e53", marginLeft: "8px" }}>Copied!</span>
+          ) : (
+            <CopyIcon onClick={() => copyValueToClipboard("phone", phone)}><FaCopy /></CopyIcon>
+          )}
+        </Value>
 
-      <Label>QR Code:</Label>
-      <QRCode src={qrCode} alt="QR Code" />
 
-      <Label>UserName:</Label>
-      <StyledInput 
-        type="text" 
-        placeholder="Enter Username" 
-        onChange={(e) => setUserName(e.target.value)} 
-      />
+        <Label>QR Code:</Label>
+        <QRCode src={qrCode} alt="QR Code" />
 
-      <Label>Mobile No:</Label>
-      <StyledInput 
-        type="number" 
-        placeholder="Enter Mobile Number" 
-        onChange={(e) => setPhoneNo(e.target.value)} 
-      />
+        <Label>UserName:</Label>
+        <StyledInput 
+          type="text" 
+          placeholder="Enter Username" 
+          onChange={(e) => setUserName(e.target.value)} 
+        />
 
-      <Label>Deposit:</Label>
-      <StyledInput 
-        type="number" 
-        value={depositAmount} 
-        onChange={(e) => setDepositAmount(e.target.value)} 
-        placeholder="Enter deposit amount" 
-      />
+        <Label>Mobile No:</Label>
+        <StyledInput 
+          type="number" 
+          placeholder="Enter Mobile Number" 
+          onChange={(e) => setPhoneNo(e.target.value)} 
+        />
 
-      <Label>UTR NO:</Label>
-      <StyledInput 
-        type="number" 
-        placeholder="Enter UTR No." 
-        onChange={(e) => setUtr(e.target.value)} 
-      />
+        <Label>Deposit:</Label>
+        <StyledInput 
+          type="number" 
+          value={depositAmount} 
+          onChange={(e) => setDepositAmount(e.target.value)} 
+          placeholder="Enter deposit amount" 
+        />
 
-      <Note>A screenshot must be sent on WhatsApp to verify the payment.</Note>
-      <SubmitButton onClick={handleSubmit}>Proceed To Deposit</SubmitButton>
-    </Card>
+        <Label>UTR NO:</Label>
+        <StyledInput 
+          type="number" 
+          placeholder="Enter UTR No." 
+          onChange={(e) => setUtr(e.target.value)} 
+        />
+
+        <Note>A screenshot must be sent on WhatsApp to verify the payment.</Note>
+        <SubmitButton onClick={handleSubmit}>Proceed To Deposit</SubmitButton>
+      </Card>
+    </>
   );
 };
 
@@ -167,20 +197,14 @@ const Title = styled.h2`
   grid-column: 1 / 3;
 `;
 
-const CopyButton = styled.button`
-  background: linear-gradient(135deg, #ff6b6b, #ff8e53);
-  border: none;
-  padding: 6px 16px;
-  border-radius: 20px;
-  color: white;
-  font-size: 13px;
+const CopyIcon = styled.span`
+  color: #ff8e53;
+  font-size: 16px;
   cursor: pointer;
-  grid-column: 2 / 3;
-  justify-self: end;
+  margin-left: 8px;
 
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+    transform: scale(1.2);
   }
 `;
 
