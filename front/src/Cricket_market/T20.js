@@ -15,7 +15,7 @@ import { ToastContainer, toast } from "react-toastify";
 const socket = io(process.env.REACT_APP_BASE_URL);
 
 const T20Content = () => {
-  const [initialbalce,setInitialbalce]=useState(null);
+  const [initialbalce, setInitialbalce] = useState(null);
   // const INITIAL_BALANCE = 15000;
   const { profile, fetchNameWallet } = useProfile();
   const [submitClick, setSubmitClick] = useState(0);
@@ -38,7 +38,7 @@ const T20Content = () => {
   const [newMarketOddsExposure, setNewMarketOddsExposure] = useState(0);
   // console.log(prevMarketOddsExposure, "prevMarketOddsExposure")
   // console.log(marketOddsExposure, "marketOddsExposure")
-  
+
   const [backProfit, setBackProfit] = useState(0);
   const [layProfit, setLayProfit] = useState(0);
   const [team1Winnings, setTeam1Winnings] = useState(0);
@@ -55,17 +55,15 @@ const T20Content = () => {
   const [isClosing, setIsClosing] = useState(false);
   const [successPopup, setSuccessPopup] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
+  const [teamInd, setTeamInd] = useState(0)
 
   const [showBetPopup, setShowBetPopup] = useState(false);
-
   const openBetPopup = () => {
     setShowBetPopup(true);
   };
-
   const closeBetPopup = () => {
     setShowBetPopup(false);
   };
-
   const fetchWalletData2 = async () => {
     try {
       const userId = JSON.parse(localStorage.getItem('user'))?.id;
@@ -74,12 +72,12 @@ const T20Content = () => {
       setInitialbalce(response.data.balance)
       // console.log(response.data)
     } catch (err) {
-     toast.error('Failed to fetch wallet data.');
-    
+      toast.error('Failed to fetch wallet data.');
+
     }
   };
   useEffect(() => {
-    
+
     fetchWalletData2();
   }, [balance]);
 
@@ -92,49 +90,44 @@ const T20Content = () => {
       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/getwalletandexposure/${userId}`);
       setBalance(response.data.balance);
       setMarketOddsExposure(response.data.exposureBalance)
-      setTeam1Winnings(response.data.teamAProfit)
-      setTeam2Winnings(response.data.teamBProfit)
-    
+      // setTeam1Winnings(response.data.teamAProfit)
+      // setTeam2Winnings(response.data.teamBProfit)
+
       // console.log(response.data)
     } catch (err) {
-     toast.error('Failed to fetch wallet data.');
-    
+      toast.error('Failed to fetch wallet data.');
+
     }
   };
 
   useEffect(() => {
     fetchWalletData();
-    
+
   }, []);
 
 
- 
-  // const userId1 = JSON.parse(localStorage.getItem('user'))?.id;
-  // const fetchApiMatchOdds = async () => {
-  //   try {
-  //     const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/laggai_khai_getuserbet/${userId1}`);
-  //     const allData = response.data.bets;
+  const userId1 = JSON.parse(localStorage.getItem('user'))?.id;
+  const fetchApiMatchOdds = async () => {
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/laggai_khai_getuserbet/${userId1}`);
+      const allData = response.data.bets;
+      // Filter data to only include entries where 'match' equals 'matchConstant'
+      const filtered = allData.filter((item) => item.match === match);
+      console.log(response.data, "data")
+      console.log(filtered, "filtereddata")
+      setTeam1Winnings(filtered[0].teamAProfit); // Accessing the first object in the array
+      setTeam2Winnings(filtered[0].teamBProfit);
+      // fetchNameWallet();
+    } catch (err) {
+      console.error('Error fetching bets:', err);
+      // toast.error("There was an error fetching bets.");
+    }
+  }
 
+  useEffect(() => {
 
-  //     // Filter data to only include entries where 'match' equals 'matchConstant'
-  //     const filtered = allData.filter((item) => item.match === match);
-  //     console.log(response.data, "data")
-  //     setTeam1Winnings(filtered[0].teamAProfit); // Accessing the first object in the array
-  //     setTeam2Winnings(filtered[0].teamBProfit);
-  //     // fetchNameWallet();
-  //   } catch (err) {
-  //     console.error('Error fetching bets:', err);
-  //     // toast.error("There was an error fetching bets.");
-  //   }
-  // }
-
-  // useEffect(() => {
-
-  //   fetchApiMatchOdds()
-  // }, []);
-
-  
-
+    fetchApiMatchOdds()
+  }, []);
 
   const [previousBet, setPreviousBet] = useState({
     runs: null,
@@ -170,7 +163,6 @@ const T20Content = () => {
     if (isNaN(parsedStake) || isNaN(parsedOdds) || isNaN(parsedRate)) {
       throw new Error('Invalid input values for calculation');
     }
-
     if (parsedRate < 100) {
       if (type.toLowerCase() === 'no') {
         return {
@@ -344,9 +336,9 @@ const T20Content = () => {
             return;
           }
         }
-        let amountToDeduct=0;
+        let amountToDeduct = 0;
         if (parsedRate < 100) {
-           amountToDeduct = parsedStake;
+          amountToDeduct = parsedStake;
         }
         const success = handleOverBetPlacement(
           selectedBet,
@@ -381,6 +373,7 @@ const T20Content = () => {
       const newProfit = Math.round(stake * (decimalOdds - 1));
 
       const teamIndex = data && data.length > 0 ? data.findIndex(row => row[0] === selectedBet.label) : -1;
+      setTeamInd(teamIndex)
       if (teamIndex === -1) {
         throw new Error("Invalid team selection");
       }
@@ -406,38 +399,31 @@ const T20Content = () => {
         }
       }
 
-      const newExposure = Math.min(newTeam1Winnings, newTeam2Winnings)+Math.abs(prevMarketOddsExposure);
-      
-      if (Math.abs(newExposure) > balance  ) {
-      if(Math.abs(Math.min(newTeam1Winnings, newTeam2Winnings)) != (marketOddsExposure+Math.abs(newExposure))){
-    
-      }else{
-        setInsufficientBalanceMessage("Insufficient balance for this bet!");
-        setInsufficientBalancePopup(true);
-        return;
-      } 
+      const newExposure = Math.min(newTeam1Winnings, newTeam2Winnings) + Math.abs(prevMarketOddsExposure);
+
+      if (Math.abs(newExposure) > balance) {
+        if (Math.abs(Math.min(newTeam1Winnings, newTeam2Winnings)) != (marketOddsExposure + Math.abs(newExposure))) {
+
+        } else {
+          setInsufficientBalanceMessage("Insufficient balance for this bet!");
+          setInsufficientBalancePopup(true);
+          return;
+        }
       }
 
-      setPrevMarketOddsExposure(prevMarketOddsExposure+newExposure);
-      setMarketOddsExposure(marketOddsExposure+Math.abs(newExposure));
-      setBalance(balance-Math.abs(newExposure));
-
-     
-
+      setPrevMarketOddsExposure(prevMarketOddsExposure + newExposure);
+      setMarketOddsExposure(marketOddsExposure + Math.abs(newExposure));
+      setBalance(balance - Math.abs(newExposure));
       console.log(prevMarketOddsExposure, "prevMarketOddsExposure")
 
       if (Math.abs(Math.min(newTeam1Winnings, newTeam2Winnings)) != marketOddsExposure) {
-        setBalance(balance+marketOddsExposure-Math.abs(Math.min(newTeam1Winnings, newTeam2Winnings)));
+        setBalance(balance + marketOddsExposure - Math.abs(Math.min(newTeam1Winnings, newTeam2Winnings)));
         setMarketOddsExposure(Math.abs(Math.min(newTeam1Winnings, newTeam2Winnings)));
       }
-
       // setMarketOddsExposure(marketOddsExposure);
       // setBalance(balance);
       // setPrevMarketOddsExposure(marketOddsExposure);
       updateExposureAndBalance();
-      
-
-
       setTeam1Winnings(newTeam1Winnings);
       setTeam2Winnings(newTeam2Winnings);
 
@@ -445,7 +431,6 @@ const T20Content = () => {
       if (closeBetPopup) {
         closeBetPopup();
       }
-
       setSelectedBet({ label: "", odds: "" });
       setStakeValue("");
       setProfit(0);
@@ -471,9 +456,6 @@ const T20Content = () => {
     previousBet
   ]);
 
-
-
-
   const calculateProfit = (odds, stake) => {
     if (!odds || !stake) return 0;
     const decimalOdds = (parseFloat(odds) / 100) + 1;
@@ -484,7 +466,6 @@ const T20Content = () => {
       console.log("selectedBet", selectedBet.label);
       setSelectedBetLabel(selectedBet.label);
     }
-
     if (selectedBet.odds) {
       console.log("selectedBet", selectedBet.odds);
       setSelectedBetOdds(selectedBet.odds);
@@ -497,7 +478,7 @@ const T20Content = () => {
   }, [selectedBet]);
 
   useEffect(() => {
-    if(balance  && exposure){
+    if (balance && exposure) {
       setBalanceChange(true);
     }
     console.log("balance", balance);
@@ -511,62 +492,59 @@ const T20Content = () => {
     console.log("balanceChange", balanceChange);
     console.log("currentStake", currentStake);
     console.log("oddsData", oddsData);
-  }, [balance,exposure]);
+    console.log("profit", profit)
+  }, [balance, exposure]);
 
-  // console.log(submitClick, balance, balanceChange)
   useEffect(() => {
-
     if (balanceChange) {
       if (selectedBetType === "Lgaai" || selectedBetType === "khaai") {
         setSubmitClick((prev) => (prev + 1))
         setBalanceChange(false);
-        
         // if (submitClick >= 1) {
-          
-          const placeBet = async () => {
-            const now = new Date();
-            const newBet = {
-              time: now.toISOString(),
-              label: selectedBetLabel,
-              odds: selectedBetOdds,
-              type: selectedBetType,
-              stake: currentStake,
-              teamAProfit: Number(team1Winnings.toFixed(2)),
-              teamBProfit: Number(team2Winnings.toFixed(2)),
-              balance: Number(balance.toFixed(2)),
-              exposure: Number(exposure.toFixed(2)),
-              marketType: 'matchOdds',
-              rate: selectedBet.odds,
-              userId: JSON.parse(localStorage.getItem('user'))?.id,
-              match: match
-            };
-            console.log("newBet", newBet);
-            setMyBets((prevBets) => [...prevBets, newBet]);
-
-            try {
-              const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/api/laggai_khai_bets`, newBet);
-                console.log("response",newBet);
-              if (response.status == 201) {
-                fetchWalletData();
-                setSuccessMessage("Bet placed successfully! Your updated wallet balance.");
-                setSuccessPopup(true);
-                // toast.success("Bet placed successfully! Your updated wallet balance.");
-              } else {
-                toast.error(response.data.message || "Failed to place bet.");
-              }
-            } catch (err) {
-              console.error("Error placing bet:", err);
-              toast.error("Low Balance recharge Now")
-            }
-            fetchNameWallet();
-            // Reset balanceChange after placing bet
+        const placeBet = async () => {
+          const now = new Date();
+          const newBet = {
+            time: now.toISOString(),
+            label: selectedBetLabel,
+            odds: selectedBetOdds,
+            type: selectedBetType,
+            stake: currentStake,
+            teamAProfit: Number(team1Winnings.toFixed(2)),
+            teamBProfit: Number(team2Winnings.toFixed(2)),
+            balance: Number(balance.toFixed(2)),
+            exposure: Number(exposure.toFixed(2)),
+            marketType: 'matchOdds',
+            rate: selectedBet.odds,
+            userId: JSON.parse(localStorage.getItem('user'))?.id,
+            match: match,
+            teamIndex: teamInd
+            // profit:
           };
-          // setSubmitClick(false)
-          placeBet();
+          // console.log("newBet", newBet);
+          setMyBets((prevBets) => [...prevBets, newBet]);
+          try {
+            const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/api/laggai_khai_bets`, newBet);
+            if (response.status == 201) {
+              fetchWalletData();
+              setSuccessMessage("Bet placed successfully.");
+              setSuccessPopup(true);
+              // toast.success("Bet placed successfully! Your updated wallet balance.");
+            } else {
+              toast.error(response.data.message || "Failed to place bet.");
+            }
+          } catch (err) {
+            console.error("Error placing bet:", err);
+            toast.error("Low Balance recharge Now")
+          }
+          fetchNameWallet();
+          // Reset balanceChange after placing bet
+        };
+        placeBet();
         // }
       }
     }
-  }, [balanceChange, stakeValue, selectedBet, team1Winnings, team2Winnings, balance, exposure, match, currentStake]);
+  }, [balanceChange, stakeValue, selectedBet, team1Winnings, team2Winnings, balance, exposure, match, currentStake, teamInd]);
+
 
   useEffect(() => {
     if (!id) return;
@@ -900,11 +878,12 @@ const PopupOverlay = styled.div`
 
 const PopupContainer = styled.div`
   background: linear-gradient(135deg, rgba(42, 42, 64, 0.5), rgba(30, 30, 47, 0.5));
-  border-radius: 15px;
-  padding: 2rem;
+  border-radius: 5px;
+  padding: 0.5rem 1rem;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  width: 90%;
-  max-width: 400px;
+  width: auto;
+  // max-width: 400px;
+  box-sizing:border-box;
   animation: slideIn 0.3s ease-in-out;
 
   &.closing {
