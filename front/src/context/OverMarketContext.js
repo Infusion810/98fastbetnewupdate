@@ -53,12 +53,14 @@ const PopupOverlay = styled.div`
 
 const PopupContainer = styled.div`
   background: linear-gradient(135deg, rgba(42, 42, 64, 0.5), rgba(30, 30, 47, 0.5));
-  border-radius: 15px;
-  padding: 2rem;
+  border-radius: 5px;
+  padding: 0.5rem 1rem;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  width: 90%;
-  max-width: 400px;
+  width: auto;
+  // max-width: 400px;
+  box-sizing:border-box;
   animation: slideIn 0.3s ease-in-out;
+
 
   &.closing {
     animation: slideOut 0.3s ease-in-out forwards;
@@ -463,7 +465,7 @@ export const OverMarketProvider = ({ children }) => {
           console.log(response.status, "ok")
           // toast.success("Bet placed successfully! Your updated wallet balance.")
           // ;
-          setSuccessMessage("Bet placed successfully! Your updated wallet balance.");
+          setSuccessMessage("Bet placed successfully");
           setSuccessPopup(true);
           fetchNameWallet();
           setBetPlace(true)
@@ -513,6 +515,7 @@ export const OverMarketProvider = ({ children }) => {
           </PopupContainer>
         </PopupOverlay>
       )}
+
       {successPopup && (
         <PopupOverlay className={isClosing ? 'closing' : ''}>
           <PopupContainer className={isClosing ? 'closing' : ''} style={{ background: 'linear-gradient(135deg, rgba(42, 64, 42, 0.5), rgba(30, 47, 30, 0.5))' }}>
@@ -524,4 +527,4 @@ export const OverMarketProvider = ({ children }) => {
       )} 
     </OverMarketContext.Provider>
   );
-};
+}; 
