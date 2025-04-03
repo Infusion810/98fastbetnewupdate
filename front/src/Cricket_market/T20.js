@@ -9,6 +9,7 @@ import io from "socket.io-client";
 import { OverMarketProvider, useOverMarket } from "../context/OverMarketContext";
 import "react-toastify/dist/ReactToastify.css";
 import { useProfile } from '../context/ProfileContext';
+import { FaPlay,FaBullhorn } from 'react-icons/fa';
 import axios from 'axios'
 import { ToastContainer, toast } from "react-toastify";
 
