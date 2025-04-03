@@ -31,7 +31,10 @@ const T20Content = () => {
   const [yesPlayer, setYesPlayers] = useState(0)
   const [noPlayers, setNoPlayers] = useState(0)
   const [matchOddsBetData, setMatchOddsBetData] = useState(0)
-  const [ matchOddsTotal, setMatchOddsTotal] = useState([])
+  const [matchOddsTotal, setMatchOddsTotal] = useState([])
+  useEffect(() => {
+    localStorage.setItem("matchName", match)
+  }, [])
   const {
     overTeam1Winnings,
     overTeam2Winnings,
@@ -62,33 +65,37 @@ const T20Content = () => {
     try {
       const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/admin/match_odds_getuserBets/${match}`);
       const bets = response.data.bets;
-      console.log(response.data)
       setMatchOddsBetData(bets);
-      // Calculate total stake per match
+      // console.log(bets)
+      // Calculate total stake per match label
       const matchStakeTotals = bets.reduce((acc, bet) => {
-        if (!acc[bet.label]) {
-          acc[bet.label] = { label: bet.label, totalStake: 0 };
+        // Ensure we only sum valid stakes and labels
+        if (bet.label && typeof bet.stake === "number") {
+          if (!acc[bet.label]) {
+            acc[bet.label] = { label: bet.label, totalStake1: 0 };
+          }
+          console.log(acc[bet.label].totalStake1)
+          acc[bet.label].totalStake1 += bet.stake;
         }
-        acc[bet.label].totalStake += bet.stake;
         return acc;
       }, {});
-  
-      // Convert object to array
+
+      console.log(matchStakeTotals, "matchodds");
+
+      // Convert object to array for easy iteration in UI
       const totalStakePerMatch = Object.values(matchStakeTotals);
-      
+
       setMatchOddsTotal(totalStakePerMatch);
-  
       console.log(totalStakePerMatch, "Total stake per match");
-  
+
     } catch (err) {
       console.error('Error fetching match odds:', err);
     }
-  }, []);
-  
+  }, [match]); // Ensure it updates when `match` changes
   useEffect(() => {
     fetchMatchOdds();
   }, []);
-  
+
   console.log(matchOddsTotal, "matchOddsTotal")
   // console.log(matchOddsBetData, "matchOddsdata")
 
@@ -120,9 +127,7 @@ const T20Content = () => {
 
       // Convert object to array and remove duplicates
       const uniqueMetBets = Object.values(sessionRuns);
-
       setMetBets(uniqueMetBets);
-
     } catch (err) {
       console.error("Error fetching odds:", err);
     }
@@ -167,7 +172,7 @@ const T20Content = () => {
   useEffect(() => {
     setFancyData(formattedFancyMarkets || []);
   }, [oddsData]);
-console.log(matchOddsTotal, "matchOddsTotal1")
+  console.log(matchOddsTotal, "matchOddsTotal1")
   const columnstied = ["Min: 100 Max: 25000", "NO", "YES"];
 
   return (
