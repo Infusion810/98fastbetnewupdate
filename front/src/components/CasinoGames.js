@@ -16,6 +16,10 @@ const GamesGrid = styled.div`
   @media (max-width: 768px) {
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   }
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
 `;
 
 const GameCard = styled(Link)`
@@ -157,4 +161,4 @@ const CasinoGames = () => {
 
 
 
-export default CasinoGames; 
+export default CasinoGames;
