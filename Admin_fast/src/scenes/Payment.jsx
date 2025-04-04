@@ -30,7 +30,7 @@ const Payment = () => {
   useEffect(() => {
     const fetchUpiId = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/admin/getbankdetails`);
+        const response = await axios.get(${process.env.REACT_APP_BACKEND_URL}/api/admin/getbankdetails);
         if (response.data && response.data.upi_id) {
           setUpiId(response.data.upi_id);
           setPhone(response.data.phone)
@@ -45,9 +45,8 @@ const Payment = () => {
   // Handle Update UPI ID
   const handleUpiUpdate = async () => {
     const newUpiId = document.getElementById('upi-input').value;
-
     try {
-      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/admin/updatebankapi`, { upi_id: newUpiId });
+      const response = await axios.post(${process.env.REACT_APP_BACKEND_URL}/api/admin/updatebankapi, { upi_id: newUpiId });
       alert(response.data.message);
       setUpiId(newUpiId); // Update state to reflect the new UPI ID
     } catch (error) {
@@ -60,7 +59,7 @@ const Payment = () => {
     const newPhone = document.getElementById('phone-input').value;
 
     try {
-      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/admin/updatebankphone`, { phone: newPhone });
+      const response = await axios.post(${process.env.REACT_APP_BACKEND_URL}/api/admin/updatebankphone, { phone: newPhone });
       alert(response.data.message);
       setPhone(newPhone); // Update state to reflect the new UPI ID
     } catch (error) {
@@ -76,7 +75,8 @@ const Payment = () => {
   useEffect(() => {
     const fetchQrCode = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/admin/getQrcode`);
+        const response = await axios.get(${process.env.REACT_APP_BACKEND_URL}/api/admin/getQrcode);
+        console.log(response.data)
         if (response.data && response.data.qrCode) {
           setQrCode(response.data.qrCode);
         }
@@ -105,16 +105,16 @@ const Payment = () => {
 
     const formData = new FormData();
     formData.append('qrCode', selectedFile);
-
+    console.log(selectedFile, "selectedFile")
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_BACKEND_URL}/api/admin/updatebankQr`,
+        ${process.env.REACT_APP_BACKEND_URL}/api/admin/updatebankQr,
         formData,
         { headers: { 'Content-Type': 'multipart/form-data' } }
       );
 
       if (response.data && response.data.qrCode) {
-        const qrCodeUrl = `${process.env.REACT_APP_BACKEND_URL}/${response.data.qrCode}`;
+        const qrCodeUrl = ${process.env.REACT_APP_BACKEND_URL}/${response.data.qrCode};
         setQrCode(qrCodeUrl);
         alert(response.data.message);
       } else {
@@ -128,10 +128,10 @@ const Payment = () => {
   };
 
   const [depositData, setDepositData] = useState([]);
-  
+
   const getDepositDate = async () => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/admin/getuserDepositData`);
+      const response = await axios.get(${process.env.REACT_APP_BACKEND_URL}/api/admin/getuserDepositData);
 
       if (response.data.success) {
         console.log("Withdrawals Data:", response.data.withdrawals);
@@ -151,7 +151,7 @@ const Payment = () => {
 
   const approveDepositDate = async (id, amount, userId) => {
     try {
-      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/admin/approveDepositPayment`, {
+      const response = await axios.post(${process.env.REACT_APP_BACKEND_URL}/api/admin/approveDepositPayment, {
         withdrawalId: id,
         amount,
         userId
@@ -175,13 +175,13 @@ const Payment = () => {
   };
 
   // Sample Data for Deposit and Withdraw sections
- 
+
   const [withdrawData, setWithdrawData] = useState([]);
 
   const getPaymentDetails = async () => {
 
     try {
-      const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/admin/getuserpayemt`);
+      const response = await axios.get(${process.env.REACT_APP_BACKEND_URL}/api/admin/getuserpayemt);
 
       if (response.data.success) {
         // console.log("Withdrawals Data:", response.data.withdrawals);
@@ -201,7 +201,7 @@ const Payment = () => {
 
   const approveWithdrawal = async (id, amount, userId) => {
     try {
-      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/admin/approveWithdrawal`, {
+      const response = await axios.post(${process.env.REACT_APP_BACKEND_URL}/api/admin/approveWithdrawal, {
         withdrawalId: id,
         amount,
         userId
@@ -256,11 +256,12 @@ const Payment = () => {
     }
   };
 
+  console.log(qrCode)
   const [content, setContent] = useState("");
 
   const handleNewsUpdate = async () => {
     try {
-      const response = await axios.put(`${process.env.REACT_APP_BACKEND_URL}/api/admin/updatenews`, { content });
+      const response = await axios.put(${process.env.REACT_APP_BACKEND_URL}/api/admin/updatenews, { content });
 
       alert("News updated successfully!");
       console.log("Updated news:", response.data);
@@ -396,7 +397,7 @@ const Payment = () => {
 
 
       <div className="card">
-      <div className="card-header">
+        <div className="card-header">
           <h3>Update UPI ID</h3>
         </div>
         <div className="card-body">
@@ -412,7 +413,7 @@ const Payment = () => {
       </div>
 
       <div className="card">
-      <div className="card-header">
+        <div className="card-header">
           <h3>Update Payment No.</h3>
         </div>
         <div className="card-body">
@@ -422,29 +423,29 @@ const Payment = () => {
             Update
           </button>
           <div id="showid" className="mt-3">
-          <p style={{ color: "white" }}>Current Phone Pay: {phone}</p>
+            <p style={{ color: "white" }}>Current Phone Pay: {phone}</p>
           </div>
         </div>
       </div>
 
       <div className="card">
-      <div className="card-header">
-        <h3>Update News</h3>
+        <div className="card-header">
+          <h3>Update News</h3>
+        </div>
+        <div className="card-body">
+          <label style={{ color: "white" }}>Update News</label>
+          <input
+            type="text"
+            className="input"
+            placeholder="Enter news"
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+          />
+          <button onClick={handleNewsUpdate} className="btn btn-success">
+            Update
+          </button>
+        </div>
       </div>
-      <div className="card-body">
-        <label style={{ color: "white" }}>Update News</label>
-        <input
-          type="text"
-          className="input"
-          placeholder="Enter news"
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-        />
-        <button onClick={handleNewsUpdate} className="btn btn-success">
-          Update
-        </button>
-      </div>
-    </div>
 
       {/* Update QR Code Section */}
       <div className="card">
