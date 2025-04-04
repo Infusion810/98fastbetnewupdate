@@ -35,7 +35,8 @@ const VirtualAccountDetails = ({ onClose }) => {
       .then((response) => {
         setUpiId(response.data.upi_id);
         setPhone(response.data.phone);
-        setQrCode(`${process.env.REACT_APP_BASE_URL}/${response.data.qrCode}`);
+        // setQrCode(`${process.env.REACT_APP_BASE_URL}/${response.data.qrCode}`);
+        setQrCode(response.data.qrCode);
       })
       .catch((error) => {
         console.error("Error fetching payment details:", error);
