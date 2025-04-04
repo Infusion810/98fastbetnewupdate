@@ -26,6 +26,7 @@ import PlayGames from './matka/PlayGames';
 import Play from './matka/Play';
 import BidPage from './matka/bidPage'
 import { OverMarketProvider } from './context/OverMarketContext';
+import MobileOnlyWrapper from './components/MobileOnlyWrapper';
 
 const AppContainer = styled.div`
   display: flex;
@@ -49,7 +50,7 @@ const MainLayout = ({ children }) => (
 
 function App() {
   return (
-
+<MobileOnlyWrapper>
     <ProfileProvider>
       <BettingProvider>
       <OverMarketProvider>
@@ -176,6 +177,7 @@ function App() {
         </OverMarketProvider>
       </BettingProvider>
     </ProfileProvider>
+</MobileOnlyWrapper>
   );
 }
 
