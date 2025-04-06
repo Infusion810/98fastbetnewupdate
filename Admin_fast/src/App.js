@@ -32,6 +32,7 @@ import Avaitor from "./scenes/Avaitor";
 import TiltliSet from "./scenes/TiltliSet";
 import ResultDeclaration from "./scenes/ResultDeclaration";
 import T20 from "./scenes/T20";
+import DeleteData from "./scenes/DeleteData";
 function App() {
   const [theme, colorMode] = useMode();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -76,6 +77,7 @@ function App() {
                   <Route path="/titli2" element={<TiltliSet/>} />
                   <Route path="/cricket/market" element={<LiveCricketMarket/>} />
                   <Route path="/session/resultdeclaration" element={<T20 />} />
+                    <Route path="/delete" element={<DeleteData />} />
                   <Route path="*" element={<Navigate to="/" />} />
                 </Routes>
               </main>
