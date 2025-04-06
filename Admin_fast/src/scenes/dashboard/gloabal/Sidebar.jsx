@@ -283,6 +283,16 @@ function Sidebar() {
                 selected={selected}
                 setSelected={setSelected}
               />
+
+
+
+                  <Item
+                title="Data Delete"
+                to="/delete"
+                icon={<ReceiptOutlinedIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
               <Item
                 title="Calendar"
                 to="/calendar"
