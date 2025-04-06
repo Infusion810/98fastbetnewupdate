@@ -532,8 +532,8 @@ const WithdrawalForm = ({ onClose }) => {
         console.log("Failed to fetch withdrawal details");
       }
     } catch (err) {
-      console.error("Error fetching withdrawals:", err);
-      toast.error("Error fetching withdrawal details.");
+      console.log("Error fetching withdrawals:", err);
+      // toast.error("Error fetching withdrawal details.");
     }
   };
 
