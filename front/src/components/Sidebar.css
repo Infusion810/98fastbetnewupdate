@@ -227,7 +227,7 @@
 .mobile-only-actions .action-item {
   display: flex;
   align-items: center;
-  padding: 12px 20px;
+  padding: 2px 20px;
   color: #fff;
   cursor: pointer;
   transition: background-color 0.3s;
@@ -244,8 +244,8 @@
 
 .user-wallet-info {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  width: 100%;
   padding: 12px 20px;
 }
 
@@ -253,11 +253,30 @@
 .user-wallet-info .wallet-component {
   display: flex;
   align-items: center;
-  gap: 8px;
+  margin-bottom: 8px;
 }
 
 .user-wallet-info .auth-icon {
+  margin-right: 8px;
   font-size: 16px;
+}
+
+/* Profile row layout */
+.profile-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 6px;
+}
+
+.userid-component {
+  margin-left: -137px; /* Same indentation as profile-component icon */
+  font-size: 0.9em;
+  color: #ffaa00; /* Changed to gold color to make it stand out */
+  margin-bottom: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 5px;
 }
 
 @media (max-width: 768px) {
