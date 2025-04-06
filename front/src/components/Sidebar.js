@@ -88,13 +88,19 @@ const Sidebar = ({ activeSport, onSportSelect, sportsData = {} }) => {
         <div className="mobile-only-actions">
           <div className="sidebar-section">
             <div className="action-item user-wallet-info">
-              <div className="profile-component">
-                <FaUser className="auth-icon" />
-                <span>{profile.username}</span>
+              <div className="profile-row">
+                <div className="profile-component">
+                  <FaUser className="auth-icon" />
+                  <span>{profile.username || 'User'}</span>
+                </div>
+                <div className="wallet-component">
+                  <FaWallet className="auth-icon" />
+                  <span>₹{profile.walletBalance || 0}</span>
+                </div>
               </div>
-              <div className="wallet-component">
-                <FaWallet className="auth-icon" />
-                <span>₹{profile.walletBalance}</span>
+              <div className="userid-component">
+              <FaUser className="auth-icon" />
+                <span>ID: {profile.userNo || 'N/A'}</span>
               </div>
             </div>
             <div className="action-item" onClick={handleLogout}>
