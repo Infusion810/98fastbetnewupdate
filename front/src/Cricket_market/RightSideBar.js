@@ -568,14 +568,14 @@ const BetSection = ({
     const stake = parseFloat(stakeValue);
     const balance = parseFloat(currentBalance);
 
-    if (stake > balance) {
-      setSuccessMessage("Insufficient Balance!");
-      setShowSuccessPopup(true);
-      setTimeout(() => {
-        setShowSuccessPopup(false);
-      }, 3000);
-      return;
-    }
+    // if (stake > balance) {
+    //   setSuccessMessage("Insufficient Balance!");
+    //   setShowSuccessPopup(true);
+    //   setTimeout(() => {
+    //     setShowSuccessPopup(false);
+    //   }, 3000);
+    //   return;
+    // }
 
     handleSubmit();
   }, [selectedBet, stakeValue, currentBalance, handleSubmit]);
