@@ -722,7 +722,7 @@ const BetSection = ({
               <tr>
                 <th>Matched Bet</th>
                 <th>Mode</th>
-                <th>Odds</th>
+                <th>Run</th>
                 <th>Rate</th>
                 <th>Stake</th>
                 <th>Winning Runs</th>
@@ -739,7 +739,7 @@ const BetSection = ({
                       <td>{bet.marketType === 'overMarket' ?
                         `${bet.mode?.toUpperCase() || "-"} @ ${bet.runValue || "-"}` :
                         bet.mode || "-"}</td>
-                      <td>{bet.odds || "-"}</td>
+                     <td>{bet.noRuns ?? bet.yesRuns ?? "-"}</td>
                       <td>{bet.marketType === 'overMarket' ? bet.rate || bet.runValue || "-" : bet.odds || "-"}</td>
                       <td>{bet.stake || "0.00"}</td>
                       {/* <td style={{ color: parseFloat(bet.balance || 0) >= 0 ? 'green' : 'red' }}>
