@@ -209,6 +209,7 @@ const T20Content = () => {
             setBalance={setBalance}
             metBet={metBets}
             matchOddsTotal={matchOddsTotal}
+            match={match}
           />
 
           <TournamentWinner
