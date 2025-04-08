@@ -453,11 +453,11 @@ const TournamentWinner = ({
     }
   };
 
-  console.log( localStorage.getItem("matchName"), ",atch")
+
   const matchOddsResultFunc = async (match_name) => {
     try {
       const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/admin/new-declaration`, {
-        resultType: matchOddsResult, winner: match_name, match: localStorage.getItem("matchName")
+        resultType: matchOddsResult, winner: match_name, match: match
       })
       if (response.status === 200) {
         // fetchMatchData(matchName)
