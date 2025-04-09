@@ -10,7 +10,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 // Hardcoded backend URL to fix connection issues
-const BACKEND_URL = "http://localhost:5000";
+const BACKEND_URL = "https://api.umkk.life";
 
 const initialValues = {
   contact: "",
