@@ -9,7 +9,7 @@ import io from "socket.io-client";
 import { OverMarketProvider, useOverMarket } from "../context/OverMarketContext";
 import "react-toastify/dist/ReactToastify.css";
 import { useProfile } from '../context/ProfileContext';
-import { FaPlay,FaBullhorn } from 'react-icons/fa';
+import { FaPlay } from 'react-icons/fa';
 import axios from 'axios'
 import { ToastContainer, toast } from "react-toastify";
 
@@ -734,7 +734,7 @@ const [news, setNews] = useState([{content:"Get Ready for Action - Welcome to 98
           <div className="T20_header">
           <ScrollingTextContainer>
               <ScrollingText>
-                <h3><FaBullhorn size={22} />{news[0].content}</h3>
+                <h3>{news[0].content}</h3>
               </ScrollingText>
            </ScrollingTextContainer>
           </div>
