@@ -1336,10 +1336,6 @@ const T20Content = () => {
         throw new Error("Please fill out all fields correctly!");
       }
 
-
-      if (!selectedBet.odds || parseFloat(selectedBet.odds) === 0) {
-        throw new Error("Invalid odds value. Please select a valid Lagai or Khai value!");
-      }
       const stake = Number(stakeValue);
       if (isNaN(stake) || stake <= 0) {
         throw new Error("Invalid stake amount!");
