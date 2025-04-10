@@ -4387,17 +4387,6 @@ const T20Content = () => {
       const stake = Number(stakeValue);
       if (isNaN(stake) || stake <= 0) {
         throw new Error("Invalid stake amount!");
-
-    
-          
-            
-    
-
-          
-          Expand Down
-    
-    
-  
       }
       if (selectedBet.isOverMarket) {
         const parsedRate = parseFloat(selectedBet.rate);
