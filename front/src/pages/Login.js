@@ -1,7 +1,7 @@
 import React, { useState,useEffect } from 'react'; // Ensure useState is imported
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { FaLock, FaEnvelope, FaEye, FaEyeSlash } from 'react-icons/fa';
+import { FaLock, FaUser, FaEye, FaEyeSlash } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import axios from 'axios'
 // Ensure these styled-components are defined in your file
