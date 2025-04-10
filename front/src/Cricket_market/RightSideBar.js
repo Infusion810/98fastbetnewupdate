@@ -577,7 +577,7 @@ const BetSection = ({
     //   return;
     // }
 
-    handleSubmit();
+    // handleSubmit();
   }, [selectedBet, stakeValue, currentBalance, handleSubmit]);
 
   // console.log(allMatchOddsData)
