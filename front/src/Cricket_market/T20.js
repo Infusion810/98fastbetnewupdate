@@ -2355,7 +2355,7 @@ const T20Content = () => {
 
   const handleSubmit = useCallback(async () => {
     try {
-      // setSubmitClick((prev) => (prev + 1))
+      setSubmitClick(1);
       // console.log("ok1")
       if (!selectedBet.label || !stakeValue) {
         throw new Error("Please fill out all fields correctly!");
@@ -2463,7 +2463,7 @@ const T20Content = () => {
 
       if (Math.abs(newExposure) > balance) {
         if (Math.abs(Math.min(newTeam1Winnings, newTeam2Winnings)) != (marketOddsExposure + Math.abs(newExposure))) {
-          setSubmitClick(1);
+          // setSubmitClick(1);
         } else {
           setInsufficientBalanceMessage("Insufficient balance for this bet!");
           setInsufficientBalancePopup(true);
