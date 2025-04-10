@@ -212,13 +212,13 @@ function Sidebar() {
                 selected={selected}
                 setSelected={setSelected}
               />
-                <Item
+{/*                 <Item
                 title="Result Declaration"
                 to="/result-declaration"
                 icon={<EmojiEventsIcon />}
                 selected={selected}
                 setSelected={setSelected}
-              />
+              /> */}
               <Item
                 title="Titli Par"
                 to="/titli"
