@@ -153,7 +153,7 @@ const LoginPage = () => {
               <FormGroup>
                 <InputGroup>
                   <IconWrapper>
-                    <FaEnvelope />
+                   <FaUser />
                   </IconWrapper>
                   <Input
                     type="text"
