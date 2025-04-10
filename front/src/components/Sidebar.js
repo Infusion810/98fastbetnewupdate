@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaUser, FaSignOutAlt,  FaWallet,  } from 'react-icons/fa';
+import { FaUser, FaSignOutAlt,  FaWallet, FaPhone  } from 'react-icons/fa';
 import WithdrawalForm from './WithdrawalForm';
 import VirtualAccountDetails from './AddPointForm';
 import './Sidebar.css';
@@ -90,7 +90,7 @@ const Sidebar = ({ activeSport, onSportSelect, sportsData = {} }) => {
             <div className="action-item user-wallet-info">
               <div className="profile-row">
                 <div className="profile-component">
-                  <FaUser className="auth-icon" />
+                  <FaPhone className="auth-icon" />
                   <span>{profile.username || 'User'}</span>
                 </div>
                 <div className="wallet-component">
