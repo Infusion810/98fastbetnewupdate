@@ -992,30 +992,25 @@ export const OverMarketProvider = ({ children }) => {
       try {
         const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/api/cricket-market/bets`, {
           myBets: [betRecord]
-        })
-        // console.log(response, "response");
-        if (response.status == 201) {
-          console.log(response.status, "ok")
-          // toast.success("Bet placed successfully! Your updated wallet balance.")
-          // ;
-          setSuccessMessage("Bet placed successfully");
+        });
+        if (response.status === 201) {
+          setSuccessMessage("Bet placed successfully!");
           setSuccessPopup(true);
           fetchNameWallet();
-          setBetPlace(true)
-          fetchApi()
+          setBetPlace(true);
+          fetchApi();
+          return true;
         } else {
-          toast.error(response.data.message || "Failed to place bet.");
+          setInsufficientBalanceMessage(response.data.message || "Failed to place bet.");
+          setInsufficientBalancePopup(true);
+          return false;
         }
-
       } catch (error) {
-        console.log(error)
+        console.error("Error placing bet:", error);
+        setInsufficientBalanceMessage(error.response?.data?.message || "Failed to place bet. Please try again.");
+        setInsufficientBalancePopup(true);
+        return false;
       }
-      console.log(betRecord, "betRecord");
-      fetchApi()
-      // Update bet history
-      setOverMarketBets(prev => [betRecord, ...prev]);
-
-      return true;
     } catch (error) {
       console.error('Error placing over market bet:', error);
       setInsufficientBalanceMessage(error.message);
