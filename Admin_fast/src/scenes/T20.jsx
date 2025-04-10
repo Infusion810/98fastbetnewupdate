@@ -177,22 +177,6 @@ const T20Content = () => {
 
   return (
     <>
-
-        <div className="scorecard" style={{ paddingTop: "73px" }}>
-        <LiveScoreContainer>
-          {iframeUrl ? (
-            <iframe
-              src={iframeUrl}
-              width="100%"
-              height="100%"
-              title="Live Score"
-              style={{ border: "none" }}
-            ></iframe>
-          ) : (
-            <PlaceholderText>Live Score Not Available</PlaceholderText>
-          )}
-        </LiveScoreContainer>
-      </div>
       
       <div className="T20_container">
         <ToastContainer
