@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { FaUser, FaLock, FaEnvelope, FaEye, FaEyeSlash } from 'react-icons/fa';
+import { FaUser, FaLock, FaPhone , FaEye, FaEyeSlash } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
 const SignupPage = () => {
@@ -60,11 +60,11 @@ const SignupPage = () => {
           <FormGroup>
             <InputGroup>
               <IconWrapper>
-                <FaUser />
+              <FaPhone />
               </IconWrapper>
               <Input 
                 type="text" 
-                placeholder="Enter your phone no." 
+                placeholder="Enter your phone No" 
                 value={username} 
                 onChange={(e) => setUsername(e.target.value)} 
                 required 
@@ -75,7 +75,7 @@ const SignupPage = () => {
           <FormGroup>
             <InputGroup>
               <IconWrapper>
-                <FaEnvelope />
+              <FaUser />
               </IconWrapper>
               <Input 
                type="text"
