@@ -154,7 +154,7 @@ const LiveCricketMarket = () => {
               }
             >
               <LiveBadge>LIVE</LiveBadge>
-              <MatchName>{match.matchName}</MatchName>
+              <MatchName>{match.matchName}-{match.matchDate}</MatchName>
             </MatchCard>
           ))}
         </MatchList>
