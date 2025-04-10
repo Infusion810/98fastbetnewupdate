@@ -1,7 +1,7 @@
 import React, { useState ,useEffect} from 'react';
 import { HomeIcon, PlayIcon } from '@heroicons/react/24/solid';
 import './SideNavbar.css';
-import { FaPlay,FaBullhorn } from 'react-icons/fa';
+import { FaPlay } from 'react-icons/fa';
 import styled from 'styled-components';
 import axios from "axios";
 const SideNavbar = ({ activeSport, onSportSelect }) => {
@@ -88,7 +88,7 @@ const SideNavbar = ({ activeSport, onSportSelect }) => {
     </nav>
        <ScrollingTextContainer>
               <ScrollingText>
-                <h3><FaBullhorn size={22} />{news[0].content}</h3>
+                <h3>{news[0].content}</h3>
               </ScrollingText>
       </ScrollingTextContainer>
     </>
