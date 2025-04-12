@@ -233,13 +233,13 @@ function Sidebar() {
                 selected={selected}
                 setSelected={setSelected}
               />
-                <Item
+{/*                 <Item
                 title="Andhar Bhar"
                 to="/andr"
                 icon={<PeopleOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
-              />
+              /> */}
                <Item
                 title="Mines"
                 to="/mines"
