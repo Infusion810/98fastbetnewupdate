@@ -206,19 +206,19 @@ function Sidebar() {
               />
 
               <Item
-                title="Cricket"
+                title="Aar Par Parchi"
                 to="/cricket"
                 icon={<PeopleOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
               />
-                <Item
+{/*                 <Item
                 title="Result Declaration"
                 to="/result-declaration"
                 icon={<EmojiEventsIcon />}
                 selected={selected}
                 setSelected={setSelected}
-              />
+              /> */}
               <Item
                 title="Titli Par"
                 to="/titli"
@@ -293,7 +293,7 @@ function Sidebar() {
                 selected={selected}
                 setSelected={setSelected}
               />
-              <Item
+{/*               <Item
                 title="Calendar"
                 to="/calendar"
                 icon={<CalendarTodayOutlinedIcon />}
@@ -321,7 +321,7 @@ function Sidebar() {
                 icon={<PieChartOutlineOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
-              />
+              /> */}
 
             </Box>
           </Menu>
