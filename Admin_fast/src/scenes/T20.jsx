@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import "./T20.css";
-// import BetSection from "./RightSideBar";
 import TournamentWinner from "./TournamentWinner";
 import styled from "styled-components";
 import { useLocation } from "react-router-dom";
