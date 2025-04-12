@@ -571,7 +571,7 @@ const handleClick = (gameid,iframeUrl,match) => {
                   <MatchInfo>
                     <MatchTitle>
                       <LiveTag>LIVE</LiveTag>
-                      {match.matchName}------{match.matchDate}
+                      {match.matchName}---{match.matchDate}
                     </MatchTitle>
                     <MatchMeta>
                       {/* <span>
