@@ -121,12 +121,14 @@ const SliderArrow = styled.button`
 
 const CasinoGames = () => {
   const games = [
-    { id: 1, name: 'Aviator', image: '/images/games/aviator.gif', path: '/casino/aviator' },
-    { id: 2, name: 'Tittli Patta', image: '/images/buttefly-images.gif', path: '/casino/fun-games' },
-    { id: 3, name: 'Andar Bahar', image: '/images/games/more_slots_andar_bahar.webp', path: '/casino/andar-bahar' },
-    { id: 4, name: 'Mines', image: '/images/games/mines.gif', path: '/casino/mines' },
-    { id: 5, name: 'Aar Par Parchi', image: '/images/logoaar.gif', path: '/cricket2' },
-    { id: 5, name: 'Matka', image:'/images/matka.jpg', path: '/casino/matka' },
+    { id: 1, name: 'Tittli Patta', image: '/images/buttefly-images.gif', path: '/casino/fun-games' },
+    { id: 2, name: 'Aviator', image: '/images/games/aviator.gif', path: '/casino/aviator' },
+    { id: 3, name: 'Matka', image:'/images/matka.jpg', path: '/casino/matka' },
+    { id: 4, name: 'Aar Par Parchi', image: '/images/logoaar.gif', path: '/cricket2' },
+    // { id: 3, name: 'Andar Bahar', image: '/images/games/more_slots_andar_bahar.webp', path: '/casino/andar-bahar' },
+    { id: 5, name: 'Mines', image: '/images/games/mines.gif', path: '/casino/mines' },
+
+
     // { id: 6, name: 'Jetx', image: '/images/games/more_slots_jetx.webp', path: '/casino/jetx' },
     // { id: 7, name: 'Pushpa Rani', image: '/images/games/more_slots_pushpa_rani.webp', path: '/casino/pushpa-rani' },
     // { id: 8, name: 'Color Prediction', image: '/images/games/color-prediction.gif', path: '/casino/color-prediction' }
