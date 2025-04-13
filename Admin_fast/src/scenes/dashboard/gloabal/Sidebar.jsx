@@ -284,7 +284,13 @@ function Sidebar() {
                 setSelected={setSelected}
               />
 
-
+               <Item
+                title="User Management"
+                to="/users"
+                icon={<PeopleOutlinedIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
 
                   <Item
                 title="Data Delete"
@@ -293,6 +299,8 @@ function Sidebar() {
                 selected={selected}
                 setSelected={setSelected}
               />
+
+              
 {/*               <Item
                 title="Calendar"
                 to="/calendar"
