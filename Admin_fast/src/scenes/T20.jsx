@@ -110,7 +110,7 @@ const T20Content = () => {
         rate: bet.rate,
         stake: bet.stake,
         noRuns: bet.mode === "no" ? bet.noRuns : 0,
-        yesRuns: bet.mode === "yes" ? bet.noRuns : 0, // Assuming "yes" maps to `noRuns` too
+        yesRuns: bet.mode === "yes" ? bet.yesRuns : 0, // Assuming "yes" maps to `noRuns` too
       }));
 
       // Group and accumulate runs
