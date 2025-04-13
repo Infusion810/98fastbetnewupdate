@@ -471,10 +471,11 @@ const TournamentWinner = ({
     }
   }
 
-  const handleReverse = async () => {
+  const handleReverse = async (match_name, no_runs, yes_runs) => {
     try {
       console.log("🔹 Sending request...");
-      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/session-results/reset`);
+      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/session-results/reset`,
+        { runs: Newruns, matchName: match_name, match: match, yesRuns: yes_runs, noRuns: no_runs });
       console.log("✅ Response received:", response);
 
       if (response.status === 200) {
@@ -487,6 +488,8 @@ const TournamentWinner = ({
       toast.error(error?.response?.data?.message?.toString() || "There was an error updating the reverse.");
     }
   };
+
+
   const handleReverseMatchOdds = async () => {
     try {
       console.log("🔹 Sending request...");
@@ -525,14 +528,14 @@ const TournamentWinner = ({
           // backgroundColor: "green"
         }}
       />
-      <div className="T20_header">
+      {/* <div className="T20_header">
         <h1>{title}</h1>
         {isMatchOdds ?
           <ReverseButton onClick={handleReverseMatchOdds}>Reverse</ReverseButton>
           :
           ""
         }
-      </div>
+      </div> */}
       <TableContainer>
         <Table>
           <thead>
@@ -740,7 +743,8 @@ const TournamentWinner = ({
                         >
                           Submit
                         </SubmitButton>
-                        <ReverseButton onClick={handleReverse}>Reverse</ReverseButton>
+                      <ReverseButton onClick={() => handleReverse(row.label,  parseFloat(row.noRuns || 0).toFixed(2), parseFloat(row.yesRuns || 0).toFixed(2))}>Reverse</ReverseButton>
+                 
                       </ActionContainer>
                     </TableCell>
                   </tr>
