@@ -823,9 +823,9 @@ body {
         left: -59px;
     }
 
-    @media (min-width:412px) and (max-width:1028px) {
+    @media (min-width: 412px) and (max-width: 1028px) {
         /* Tablets */
-        top: 21.5vh;
+        top: 4.5vh;
     }
 }
 
