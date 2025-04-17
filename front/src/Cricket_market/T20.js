@@ -93,9 +93,16 @@ const T20Content = () => {
       toast.error('Failed to fetch wallet data.');
     }
   };
-  useEffect(() => {
+  // useEffect(() => {
+  //   fetchWalletData();
+  // }, []);
+
+   useEffect(() => {
     fetchWalletData();
+    const intervalId = setInterval(fetchWalletData, 1000);
+    return () => clearInterval(intervalId);
   }, []);
+  
   const userId1 = JSON.parse(localStorage.getItem('user'))?.id;
   const fetchApiMatchOdds = async () => {
     try {
