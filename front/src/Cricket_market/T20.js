@@ -89,7 +89,7 @@ const T20Content = () => {
       setMarketOddsExposure(response.data.exposureBalance)
       // setTeam1Winnings(response.data.teamAProfit)
       // setTeam2Winnings(response.data.teamBProfit)
-      // console.log(response.data)
+      console.log(response.data.balance)
     } catch (err) {
       toast.error('Failed to fetch wallet data.');
     }
