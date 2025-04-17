@@ -68,7 +68,7 @@ const T20Content = () => {
       const userId = JSON.parse(localStorage.getItem('user'))?.id;
       if (!userId) throw new Error('User ID not found');
       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/getwalletandexposure/${userId}`);
-      setInitialbalce(response.data.balance)
+      
       // console.log(response.data)
     } catch (err) {
       toast.error('Failed to fetch wallet data.');
@@ -85,6 +85,7 @@ const T20Content = () => {
       if (!userId) throw new Error('User ID not found');
       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/getwalletandexposure/${userId}`);
       setBalance(response.data.balance);
+      setInitialbalce(response.data.balance);
       setMarketOddsExposure(response.data.exposureBalance)
       // setTeam1Winnings(response.data.teamAProfit)
       // setTeam2Winnings(response.data.teamBProfit)
@@ -99,6 +100,7 @@ const T20Content = () => {
 
    useEffect(() => {
     fetchWalletData();
+     console.log(balance);
     const intervalId = setInterval(fetchWalletData, 1000);
     return () => clearInterval(intervalId);
   }, []);
