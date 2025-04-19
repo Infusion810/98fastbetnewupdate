@@ -1,3 +1,46 @@
+/* 
+.success-popup {
+    background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%) !important;
+    border-radius: 16px !important;
+    border: 2px solid #fff !important;
+    box-shadow: 0 0 20px rgba(76, 175, 80, 0.5) !important;
+  }
+  
+  .error-popup {
+    background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%) !important;
+    border-radius: 16px !important;
+    border: 2px solid #fff !important;
+    box-shadow: 0 0 20px rgba(244, 67, 54, 0.5) !important;
+  }
+  
+  .info-popup {
+    background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%) !important;
+    border-radius: 16px !important;
+    border: 2px solid #fff !important;
+    box-shadow: 0 0 20px rgba(33, 150, 243, 0.5) !important;
+  }
+  
+  .win-popup {
+    background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%) !important;
+    border-radius: 16px !important;
+    border: 2px solid #fff !important;
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.5) !important;
+  }
+  
+  .lose-popup {
+    background: linear-gradient(135deg, #FF416C 0%, #FF4B2B 100%) !important;
+    border-radius: 16px !important;
+    border: 2px solid #fff !important;
+    box-shadow: 0 0 30px rgba(255, 65, 108, 0.5) !important;
+  }
+  
+  
+  .swal2-backdrop-show {
+    background: rgba(0, 0, 0, 0.7) !important;
+  } */
+
+
+
 /* Custom Popup Styles */
 .success-popup {
     background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%) !important;
@@ -37,4 +80,80 @@
   /* Animated Background */
   .swal2-backdrop-show {
     background: rgba(0, 0, 0, 0.7) !important;
+  }
+
+  /* Button Active States */
+  button:active {
+    transform: scale(0.95);
+    transition: transform 0.1s ease-in-out;
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Primary Button Active */
+  .primary-btn:active {
+    background: linear-gradient(135deg, #1976D2 0%, #1565C0 100%);
+    border-color: #1565C0;
+  }
+
+  /* Success Button Active */
+  .success-btn:active {
+    background: linear-gradient(135deg, #388E3C 0%, #2E7D32 100%);
+    border-color: #2E7D32;
+  }
+
+  /* Warning Button Active */
+  .warning-btn:active {
+    background: linear-gradient(135deg, #FFA000 0%, #FF8F00 100%);
+    border-color: #FF8F00;
+  }
+
+  /* Danger Button Active */
+  .danger-btn:active {
+    background: linear-gradient(135deg, #D32F2F 0%, #C62828 100%);
+    border-color: #C62828;
+  }
+
+  /* Game Control Button Active */
+  .game-btn:active {
+    background: linear-gradient(135deg, #6200EA 0%, #5502C8 100%);
+    border-color: #5502C8;
+    color: white;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Bet Button Active */
+  .bet-btn:active {
+    background: linear-gradient(135deg, #FF6D00 0%, #F57C00 100%);
+    border-color: #F57C00;
+    color: white;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Hover Effects */
+  button:hover {
+    opacity: 0.9;
+    transition: opacity 0.2s ease-in-out;
+  }
+
+  /* Focus States */
+  button:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
+  }
+
+  /* Disabled State */
+  button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  /* Animation for Active State */
+  @keyframes buttonPress {
+    0% { transform: scale(1); }
+    50% { transform: scale(0.95); }
+    100% { transform: scale(1); }
+  }
+
+  button:active {
+    animation: buttonPress 0.2s ease-in-out;
   }
